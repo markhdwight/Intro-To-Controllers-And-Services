@@ -85,6 +85,12 @@ public class PersonService {
 			{
 				temp.setFirstName(p.getFirstName());
 				temp.setLastName(p.getLastName());
+				
+				for(Person f : temp.getFriends())
+				{
+					f.updateFriend(id,mapper.toPerson(p));
+				}
+				
 				return mapper.toPersonDto(temp);
 			}
 		}

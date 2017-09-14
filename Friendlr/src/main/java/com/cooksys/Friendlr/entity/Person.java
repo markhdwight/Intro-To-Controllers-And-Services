@@ -53,6 +53,18 @@ public class Person implements Comparable {
 		return friends.remove(f);
 	}
 	
+	public void updateFriend(Long id,Person p)
+	{
+		for(Person f : friends)
+		{
+			if(f.getId().equals(id))
+			{
+				f.setFirstName(p.getFirstName());
+				f.setLastName(p.getLastName());
+			}
+		}
+	}
+	
 	public Set<Person> getFriends()
 	{
 		return friends;
