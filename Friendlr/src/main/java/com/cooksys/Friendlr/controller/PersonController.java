@@ -45,6 +45,20 @@ public class PersonController
 		return tempP;
 	}
 	
+	@GetMapping("{id}/friends")
+	public Set<PersonDto> getFriends(@PathVariable Long id, HttpServletResponse response)
+	{
+		PersonDto tempP = service.getPerson(id);
+		
+		if(tempP.equals(null))
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		
+		else response.setStatus(HttpServletResponse.SC_FOUND);
+		
+		Set<PersonDto> friends = service.getFriends(id);
+		return friends;
+	}
+	
 	@PostMapping
 	public PersonDto createPerson(@RequestBody PersonDto p)
 	{
@@ -72,7 +86,7 @@ public class PersonController
 		return tempP;
 	}
 	
-	@PatchMapping("{id}/buddies/{friendId}")
+	@PatchMapping("{id}/friends/{friendId}")
 	public void addFriend(@PathVariable Long id, @PathVariable Long friendId)
 	{	
 		service.addFriend(id,friendId);

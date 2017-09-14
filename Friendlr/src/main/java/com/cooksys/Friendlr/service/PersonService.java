@@ -30,6 +30,23 @@ public class PersonService {
 		return people.stream().map(mapper::toPersonDto).collect(Collectors.toSet());
 	}
 	
+	public Set<PersonDto> getFriends(Long id)
+	{
+		Set<PersonDto> friends = new HashSet<PersonDto>();
+		
+		for(Person p : people)
+		{
+			if(p.getId().equals(id))
+			{
+				for(Person f : p.getFriends())
+				{
+					friends.add(mapper.toPersonDto(f));
+				}
+			}
+		}
+		return friends;
+	}
+	
 	public void setPeople(Set<PersonDto> people)
 	{
 		this.people = people.stream().map(mapper::toPerson).collect(Collectors.toSet());
@@ -76,31 +93,47 @@ public class PersonService {
 
 	public PersonDto removePerson(Long id) {
 		
-		PersonDto removed = null;
+		PersonDto removedDto = null;
+		Person removed = null;
 		
 		for(Person temp : people)
-		{
-			temp.removeFriend(temp);
-			
+		{			
 			if(temp.getId().equals(id))
 			{				
-				removed = mapper.toPersonDto(temp);
-				people.remove(temp);
+				for(Person f : temp.getFriends())
+				{
+					f.removeFriend(temp);
+				}
+				
+				removedDto = mapper.toPersonDto(temp);
+				removed = temp;
 			}
 		}
 		
-		return removed;
+		people.remove(removed);
+		return removedDto;
 	}
 	
 	public void addFriend(Long id,Long friendId)
 	{
-		Person person = mapper.toPerson(getPerson(id));
-		Person friend = mapper.toPerson(getPerson(friendId));
+		Person person = null,friend = null;
+		
+		for(Person temp : people)
+		{		
+			if(temp.getId().equals(id))
+			{				
+				person = temp;
+			}
+			else if(temp.getId().equals(friendId))
+			{
+				friend = temp;
+			}
+		}
 
 		if(!(person == null || friend == null))
 		{
 			person.addFriend(friend);
-			//friend.addFriend(person);		//Assuming that the friendship is reciprocated			
+			friend.addFriend(person);		//Assuming that the friendship is reciprocated			
 		}
 	}
 }

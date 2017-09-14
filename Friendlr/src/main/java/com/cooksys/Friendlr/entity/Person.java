@@ -3,7 +3,7 @@ package com.cooksys.Friendlr.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Person {
+public class Person implements Comparable {
 
 	private Long id;
 	private String firstName;
@@ -48,8 +48,28 @@ public class Person {
 		friends.add(f);
 	}
 	
-	public void removeFriend(Person f)
+	public boolean removeFriend(Person f)
 	{
-		friends.remove(f);
+		return friends.remove(f);
+	}
+	
+	public Set<Person> getFriends()
+	{
+		return friends;
+	}
+
+	@Override
+	public int compareTo(Object other) {
+
+		return comparePeople((Person)other);
+	}
+	
+	private int comparePeople(Person other)
+	{
+		if(this.lastName.compareTo(other.getLastName()) == 0)
+		{
+			return this.firstName.compareTo(other.getFirstName());
+		}
+		else return this.lastName.compareTo(other.getLastName());
 	}
 }
