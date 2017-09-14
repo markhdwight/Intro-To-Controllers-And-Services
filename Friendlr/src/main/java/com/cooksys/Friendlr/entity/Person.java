@@ -1,10 +1,15 @@
 package com.cooksys.Friendlr.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Person {
 
 	private Long id;
 	private String firstName;
 	private String lastName;
+	
+	private Set<Person> friends = new HashSet<Person>();
 	
 	public Person()
 	{
@@ -36,5 +41,15 @@ public class Person {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public void addFriend(Person f)
+	{
+		friends.add(f);
+	}
+	
+	public void removeFriend(Person f)
+	{
+		friends.remove(f);
 	}
 }
